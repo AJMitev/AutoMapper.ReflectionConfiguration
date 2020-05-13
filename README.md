@@ -1,6 +1,6 @@
 # AutoMapper.ReflectionConfiguration
 
-[![NuGet Badge](https://buildstats.info/nuget/AutoMapperConfiguration.Reflection)]
+![NuGet Badge](https://buildstats.info/nuget/AutoMapperConfiguration.Reflection)
 
 Automatically creates an AutoMapper profile by Reflection and provides an easy way to register your mappings.
 
