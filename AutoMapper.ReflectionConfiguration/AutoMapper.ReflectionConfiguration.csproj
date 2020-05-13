@@ -2,6 +2,20 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>8.0</LangVersion>
+    <PackageId>AutoMapperConfiguration.Reflection</PackageId>
+    <Version>1.0.0</Version>
+    <Title>AutoMapper.ReflectionConfiguration</Title>
+    <Authors>Aleksandar J. Mitev</Authors>
+    <Company>Aleksandar J. Mitev</Company>
+    <Owners>Aleksandar J. Mitev</Owners>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/AJMitev/AutoMapper.ReflectionConfiguration</RepositoryUrl>
+    <Description>Automatically creates an AutoMapper profile by Reflection.</Description>
+    <Copyright>2020</Copyright>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageTags>AutoMapper Reflection Profile Registrator</PackageTags>
+    <NuspecFile>./AutoMapper.ReflectionConfiguration.nuspec</NuspecFile>
   </PropertyGroup>
 
   <ItemGroup>
