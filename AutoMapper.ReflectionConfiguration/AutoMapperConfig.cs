@@ -16,12 +16,17 @@
 
         public static IMapper MapperInstance { get; set; }
 
+
+        public static void RegisterMappings(params Assembly[] assemblies)
+            => RegisterMappings(ProfileNameTemplate, assemblies);
+
         public static void RegisterMappings(string profileName = ProfileNameTemplate, params Assembly[] assemblies)
         {
             if (isInitialized)
             {
                 return;
             }
+
 
             isInitialized = true;
 
@@ -34,6 +39,7 @@
                     CreateFromMappings(configuration, types);
                     CreateToMappings(configuration, types);
                     CreateCustomMappings(configuration, types);
+                    CreateGenericCustomMappings(configuration, types);
                 });
 
             MapperInstance = new Mapper(new MapperConfiguration(config));
@@ -48,6 +54,9 @@
 
         private static void CreateCustomMappings(IProfileExpression configuration, List<Type> types)
             => GetCustomMappings(types).ToList().ForEach(map => map.CreateMappings(configuration));
+
+        private static void CreateGenericCustomMappings(IProfileExpression configuration, List<Type> types)
+        => GetGenericCustomMappings(types).ToList().ForEach(map => map.CreateMappings(configuration));
 
         private static IEnumerable<TypesMap> GetFromMaps(IEnumerable<Type> types)
             => from t in types
@@ -80,7 +89,17 @@
                from i in t.GetTypeInfo().GetInterfaces()
                where typeof(IHaveCustomMappings).GetTypeInfo().IsAssignableFrom(t) &&
                      !t.GetTypeInfo().IsAbstract &&
-                     !t.GetTypeInfo().IsInterface
+                     !t.GetTypeInfo().IsInterface &&
+                     !t.GetTypeInfo().ContainsGenericParameters
                select (IHaveCustomMappings)Activator.CreateInstance(t);
+
+        private static IEnumerable<IHaveCustomMappings> GetGenericCustomMappings(IEnumerable<Type> types)
+            => from t in types
+               from i in t.GetTypeInfo().GetInterfaces()
+               where typeof(IHaveCustomMappings).GetTypeInfo().IsAssignableFrom(t) &&
+                     !t.GetTypeInfo().IsAbstract &&
+                     !t.GetTypeInfo().IsInterface &&
+                     t.GetTypeInfo().ContainsGenericParameters
+               select (IHaveCustomMappings)Activator.CreateInstance(t.MakeGenericType(typeof(object)));
     }
 }
